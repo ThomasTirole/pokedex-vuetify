@@ -3,7 +3,7 @@
     <v-container class="d-flex align-start align-center">
       <v-avatar
         class="mr-4 pa-0 cursor-pointer"
-        image="@/assets/pokeball.svg"
+        image="@/assets/pokeball2.svg"
         size="64"
         @click="$router.push('/')"
       />
@@ -23,5 +23,8 @@
 
   const menuItems = ref([
     { title: 'Accueil', path: '/', icon: 'mdi-pokeball' },
+    { title: 'Favoris', path: '/favoris', icon: 'mdi-heart' },
+    { title: 'FAQ', path: 'faq', icon: 'mdi-frequently-asked-questions' },
+    { title: 'KantoMap', path: 'kantomap', icon: 'mdi-map' },
   ])
 </script>
