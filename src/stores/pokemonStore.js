@@ -296,29 +296,44 @@ export const usePokemonStore = defineStore('pokemon', {
     typeColors,
     // Ajout d'un identifiant unique pour chaque Pokémon
     pokemons: pokemons.map((pokemon, index) => ({ ...pokemon, id: index + 1 })),
+    types: Object.keys(typeColors).map((name, index) => ({ id: index + 1, name })), // Ajouté
     selectedPokemon: null,
     favorites: [],
   }),
   getters: {
     favoritesCount: state => state.favorites.length,
+    getFavorites: state => {
+      return state.favorites
+        .map(id => state.pokemons.find(p => p.id === id))
+        .filter(Boolean)
+    },
+    getPokemonById: state => id => {
+      return state.pokemons.find(pokemon => pokemon.id === id)
+    },
+    getTypeById: state => id => state.types.find(type => type.id === id),
   },
+
   actions: {
     selectPokemon (id) {
       this.selectedPokemon = this.pokemons.find(p => p.id === id) || null
     },
     toggleFavorite (pokemon) {
-      const index = this.favorites.findIndex(fav => fav.id === pokemon.id)
+      const index = this.favorites.indexOf(pokemon.id)
       if (index === -1) {
-        this.favorites.push(pokemon)
+        this.favorites.push(pokemon.id)
       } else {
         this.favorites.splice(index, 1)
       }
+      localStorage.setItem('favorites', JSON.stringify(this.favorites))
     },
     isFavorite (pokemon) {
-      return this.favorites.some(fav => fav.id === pokemon.id)
+      return this.favorites.includes(pokemon.id)
     },
     getTypeColor (type) {
       return this.typeColors[type] || '#A8A878' // Couleur par défaut si non trouvée
+    },
+    loadFavorites () {
+      this.favorites = JSON.parse(localStorage.getItem('favorites')) || [] // Récupère les favoris du localStorage ou un tableau vide.
     },
   },
 })

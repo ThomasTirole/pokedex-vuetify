@@ -13,6 +13,13 @@
 </template>
 
 <script setup>
-// Pas de logique nécessaire ici
-  import MenuPrincipal from '@/components/AppHeader.vue'
+import MenuPrincipal from '@/components/AppHeader.vue'
+import {usePokemonStore} from '@/stores/pokemonStore'
+import {onMounted} from 'vue'
+
+const pokemonStore = usePokemonStore()
+
+onMounted(() => {
+  pokemonStore.loadFavorites()
+})
 </script>
